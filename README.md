@@ -73,9 +73,7 @@ create file .prettierrc
 
 
 ```bash
-npm install -D tailwindcss postcss autoprefixer
-npm install @fullhuman/postcss-purgecss --save-dev
-npm i postcss-preset-env
+npm install -D tailwindcss postcss autoprefixer cssnano
 npx tailwindcss init -p
 ```
 create file tailwind.config.js
@@ -94,23 +92,11 @@ module.exports = {
 create file postcss.config.js
 ```
 module.exports = {
-  plugins: [
-    'tailwindcss',
-    process.env.NODE_ENV === 'production'
-      ? [
-          '@fullhuman/postcss-purgecss',
-          {
-            content: [
-              './pages/**/*.{js,jsx,ts,tsx}',
-              './src/**/*.{js,jsx,ts,tsx}',
-            ],
-            defaultExtractor: (content) =>
-              content.match(/[\w-/:]+(?<!:)/g) || [],
-          },
-        ]
-      : undefined,
-    'postcss-preset-env',
-  ],
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+    ...(process.env.NODE_ENV === 'production' ? { cssnano: {} } : {})
+  }
 };
 ```
 
